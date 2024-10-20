@@ -1,6 +1,7 @@
 package com.example.redistutorial.controller;
 
 import com.example.redistutorial.model.Note;
+import com.example.redistutorial.repository.NoteRepository;
 import com.example.redistutorial.service.NoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import java.util.Optional;
 public class NoteController {
 
     private final NoteService noteService;
+    private final NoteRepository noteRepository;
 
     @PostMapping
     public ResponseEntity<Note> creatNote(@RequestBody Note note){
@@ -30,5 +32,11 @@ public class NoteController {
     @GetMapping("/{noteId}")
     public ResponseEntity<Optional<Note>> getNote(@PathVariable String noteId){
         return ResponseEntity.ok(noteService.getById(noteId));
+    }
+
+    @DeleteMapping("{noteId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteNote(@PathVariable String noteId){
+        noteRepository.deleteById(noteId);
     }
 }
